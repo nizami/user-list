@@ -27,7 +27,7 @@
         @for (item of response.items; track item.id) {
           @switch (currentViewState) {
             @case (ViewState.List) {
-              <app-user-list-item [user]="item"></app-user-list-item>
+              <app-user-list-item [user]="item" (remove)="onRemove($event)"></app-user-list-item>
             }
             @case (ViewState.Cards) {
               <app-user-card-item [user]="item"></app-user-card-item>
@@ -45,6 +45,8 @@
 
 @if (!loading && allPageNumbers.length > 0) {
   <div class="footer">
+    <span>Found {{response?.items?.length}}</span>
+
     <div class="divider"></div>
 
     <span>Pages:</span>

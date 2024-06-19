@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserDto } from '../../services/users.api.service';
 
 @Component({
@@ -10,4 +10,9 @@ import { UserDto } from '../../services/users.api.service';
 })
 export class UserListItemComponent {
   @Input() user!: UserDto;
+  @Output() remove = new EventEmitter<UserDto>();
+
+  protected onRemove(): void {
+    this.remove.emit(this.user);
+  }
 }

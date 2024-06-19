@@ -5,6 +5,7 @@ import { ViewState } from './model/view-state.model';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ListRequest,
+  UserDto,
   UserListResponseDto,
   UsersApiService,
 } from '../services/users.api.service';
@@ -106,9 +107,20 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.searchForm.controls.pageNumber.setValue(value);
   }
 
+  protected onRemove(user: UserDto): void {
+    console.log(user);
+    
+    this.usersApi
+      .remove(user.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateSearchedUsers();
+      });
+  }
+
   private updateSearchedUsers() {
-    const request = this.searchForm.getRawValue();
     this.loading = true;
+    const request = this.searchForm.getRawValue();
 
     this.usersApi
       .getList(request)
