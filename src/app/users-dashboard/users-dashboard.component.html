@@ -1,5 +1,5 @@
 <form class="header" [formGroup]="searchForm">
-  <input type="text" formControlName="search" />
+  Search <input type="text" formControlName="search" />
 
   <div class="divider"></div>
 
@@ -17,11 +17,11 @@
   </button>
 </form>
 
-<div class="main">
-  @if (loading) {
+<div [class.loading]="loading" class="main">
+  <!-- @if (loading) {
     <h2>Loading</h2>
-  }
-  @else {
+  } -->
+  <!-- @else { -->
     @if (response; as response) {
       @if (response.items.length > 0) {
         @switch (currentViewState) {
@@ -37,11 +37,11 @@
         <h2>Nothing found</h2>
       }
     }
-  }
+  <!-- } -->
 </div>
 
 
-@if (!loading && allPageNumbers.length > 0) {
+@if (allPageNumbers.length > 0) {
   <div class="footer">
     <span>Found {{response?.items?.length}}</span>
 

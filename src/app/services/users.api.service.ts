@@ -50,6 +50,7 @@ export class UsersApiService {
     return of(response).pipe(delay(DELAY_VALUE));
   }
 
+  // этот метод не использует в контексте задачи
   getById(id: string): Observable<UserDto | undefined> {
     const user = this.DB.find((x) => x.is_active && x.id === id);
 

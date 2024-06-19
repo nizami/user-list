@@ -108,6 +108,8 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
   }
 
   protected onRemove(user: UserDto): void {
+    this.loading = true;
+
     this.usersApi
       .remove(user.id)
       .pipe(takeUntil(this.destroy$))
