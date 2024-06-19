@@ -18,9 +18,10 @@ import { SearchUsersFormModel } from './model/search-users-form.model';
 import { ViewState } from './model/view-state.model';
 import { UsersListViewComponent } from './users-list-view/users-list-view.component';
 import { UsersCardsViewComponent } from './users-cards-view/users-cards-view.component';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 const DEFAULT_PAGE_NUMBER = 1;
-const ITEMS_PER_PAGE = [5, 10, 20] as const;
+const ITEMS_PER_PAGE: ListRequest['itemsPerPage'][] = [5, 10, 20];
 
 @Component({
   selector: 'app-users-dashboard',
@@ -30,6 +31,7 @@ const ITEMS_PER_PAGE = [5, 10, 20] as const;
     ReactiveFormsModule,
     UsersListViewComponent,
     UsersCardsViewComponent,
+    PaginatorComponent,
   ],
   templateUrl: './users-dashboard.component.html',
   styleUrl: './users-dashboard.component.scss',
@@ -57,16 +59,8 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
     return this.searchForm.getRawValue().itemsPerPage;
   }
 
-  protected get allPageNumbers(): number[] {
-    if (this.response) {
-      const length = Math.ceil(
-        this.response.total_count / this.currentItemsPerPage
-      );
-
-      return Array.from({ length }, (x, i) => i + 1);
-    }
-
-    return [];
+  protected get itemsCount(): number {
+    return this.response?.total_count ?? 0;
   }
 
   protected get currentPageNumber() {

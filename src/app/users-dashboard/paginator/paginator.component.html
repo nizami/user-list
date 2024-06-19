@@ -1,0 +1,17 @@
+<span>Found {{itemsCount}}</span>
+
+<div class="divider"></div>
+
+<span>Pages:</span>
+<div>
+  @for (item of allPageNumbers; track $index) {
+    <button [class.active]="currentPageNumber === item" (click)="onSetPageNumber(item)">{{item}}</button>
+  }
+</div>
+
+<span>Items per page:</span>
+<div>
+  @for (item of allItemsPerPage; track $index) {
+    <button [class.active]="currentItemsPerPage === item" (click)="onSetItemsPerPage(item)">{{item}}</button>
+  }
+</div>

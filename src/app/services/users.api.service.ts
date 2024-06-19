@@ -28,7 +28,7 @@ export class UsersApiService {
   ];
 
   getList(request: ListRequest): Observable<UserListResponseDto> {
-    const search = request.search?.toLowerCase();
+    const search = request.search?.toLowerCase()?.trim();
     const filteredUsers = this.DB.filter(
       (x) =>
         x.is_active && (!search || x.user_name.toLowerCase().includes(search))

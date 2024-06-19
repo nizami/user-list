@@ -42,24 +42,13 @@
 </div>
 
 
-@if (allPageNumbers.length > 0) {
+@if (itemsCount > 0) {
   <div class="footer">
-    <span>Found {{response?.items?.length}}</span>
-
-    <div class="divider"></div>
-
-    <span>Pages:</span>
-    <div>
-      @for (item of allPageNumbers; track $index) {
-        <button [class.active]="currentPageNumber === item" (click)="setPageNumber(item)">{{item}}</button>
-      }
-    </div>
-
-    <span>Items per page:</span>
-    <div>
-      @for (item of allItemsPerPage; track $index) {
-        <button [class.active]="currentItemsPerPage === item" (click)="setItemsPerPage(item)">{{item}}</button>
-      }
-    </div>
+    <app-paginator [allItemsPerPage]="allItemsPerPage" 
+    [currentItemsPerPage]="currentItemsPerPage"
+    [currentPageNumber]="currentPageNumber"
+    [itemsCount]="itemsCount"
+    (setItemsPerPage)="setItemsPerPage($event)"
+    (setPageNumber)="setPageNumber($event)"></app-paginator>
   </div>
 }
