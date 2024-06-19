@@ -1,3 +1,5 @@
+<h1>Users List</h1>
+
 <form class="header" [formGroup]="searchForm">
   Search <input type="text" formControlName="search" />
 
@@ -18,27 +20,25 @@
 </form>
 
 <div [class.loading]="loading" class="main">
-  <!-- Чтобы увидеть явно загрузку  -->
-  <!-- @if (loading) {
+  @if (loading && !response) {
     <h2>Loading</h2>
-  } -->
-  <!-- @else { -->
-    @if (response; as response) {
-      @if (response.items.length > 0) {
-        @switch (currentViewState) {
-          @case (ViewState.List) {
-            <app-users-list-view [users]="response.items" (remove)="onRemove($event)"></app-users-list-view>
-          }
-          @case (ViewState.Cards) {
-            <app-users-cards-view [users]="response.items" (remove)="onRemove($event)"></app-users-cards-view>
-          }
+  }
+
+  @if (response; as response) {
+    @if (response.items.length > 0) {
+      @switch (currentViewState) {
+        @case (ViewState.List) {
+          <app-users-list-view [users]="response.items" (remove)="onRemove($event)"></app-users-list-view>
+        }
+        @case (ViewState.Cards) {
+          <app-users-cards-view [users]="response.items" (remove)="onRemove($event)"></app-users-cards-view>
         }
       }
-      @else {
-        <h2>Nothing found</h2>
-      }
     }
-  <!-- } -->
+    @else {
+      <h2>Nothing found</h2>
+    }
+  }
 </div>
 
 

@@ -35,7 +35,7 @@ export class UsersApiService {
     );
 
     const pagesCount = Math.ceil(filteredUsers.length / request.itemsPerPage);
-    const pageNumber = Math.min(pagesCount, Math.max(1, request.pageNumber));
+    const pageNumber = Math.max(1, Math.min(pagesCount, request.pageNumber));
 
     const startIndex = (pageNumber - 1) * request.itemsPerPage;
     const endIndex = startIndex + request.itemsPerPage;

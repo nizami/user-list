@@ -19,6 +19,7 @@ import { ViewState } from './model/view-state.model';
 import { UsersListViewComponent } from './users-list-view/users-list-view.component';
 import { UsersCardsViewComponent } from './users-cards-view/users-cards-view.component';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const ITEMS_PER_PAGE: ListRequest['itemsPerPage'][] = [5, 10, 20];
@@ -72,7 +73,13 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private usersApi: UsersApiService) {}
+  constructor(
+    private usersApi: UsersApiService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.initRouteQueryParams();
+  }
 
   public ngOnInit(): void {
     this.updateSearchedUsers();
@@ -80,6 +87,7 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
     this.searchForm.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe(() => {
+        this.navigateByQueryParams();
         this.updateSearchedUsers();
       });
   }
@@ -112,7 +120,26 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  private updateSearchedUsers() {
+  private initRouteQueryParams(): void {
+    const params = {
+      search: String(this.route.snapshot.queryParams['search']),
+      pageNumber: Number(this.route.snapshot.queryParams['pageNumber']) || 1,
+      itemsPerPage:
+        (Number(
+          this.route.snapshot.queryParams['itemsPerPage']
+        ) as ListRequest['itemsPerPage']) || ITEMS_PER_PAGE[0],
+    };
+
+    this.searchForm.patchValue(params);
+  }
+
+  private navigateByQueryParams(): void {
+    this.router.navigate([], {
+      queryParams: this.searchForm.getRawValue(),
+    });
+  }
+
+  private updateSearchedUsers(): void {
     this.loading = true;
     const request = this.searchForm.getRawValue();
 
