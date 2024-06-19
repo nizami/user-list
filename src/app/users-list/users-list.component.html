@@ -17,14 +17,27 @@
   </button>
 </form>
 
-<h2>Загрузка</h2>
-<h2>Найдено</h2>
-<h2>Ничего не найдено</h2>
-
 <div>
-  @if (response$ | async; as response) {
-    @for (item of response.items; track item.id) {
-      <app-user-list-item [user]="item"></app-user-list-item>
+  @if (loading$ | async) {
+    <h2>Загрузка</h2>
+  }
+  @else {
+    @if (response; as response) {
+      @if (response.items.length > 0) {
+        @for (item of response.items; track item.id) {
+          @switch (viewState) {
+            @case (ViewState.List) {
+              <app-user-list-item [user]="item"></app-user-list-item>
+            }
+            @case (ViewState.Cards) {
+              <app-user-card-item [user]="item"></app-user-card-item>
+            }
+          }
+        }
+      }
+      @else {
+        <h2>Ничего не найдено</h2>
+      }
     }
   }
 </div>

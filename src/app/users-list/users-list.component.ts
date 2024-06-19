@@ -51,7 +51,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   });
 
   protected loading$ = new Subject<boolean>();
-  protected response$ = new Subject<UserListResponseDto>();
+  protected response?: UserListResponseDto;
 
   private destroy$ = new Subject<void>();
 
@@ -73,7 +73,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.loading$.complete();
-    this.response$.complete();
   }
 
   protected setViewState(viewState: ViewState): void {
@@ -93,7 +92,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         console.log(response);
 
-        this.response$.next(response);
+        this.response = response;
       });
   }
 }
