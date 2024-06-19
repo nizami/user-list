@@ -7,19 +7,19 @@
     [class.active]="currentViewState === ViewState.List"
     (click)="setViewState(ViewState.List)"
   >
-    Список
+    List
   </button>
   <button
     [class.active]="currentViewState === ViewState.Cards"
     (click)="setViewState(ViewState.Cards)"
   >
-    Карточки
+    Cards
   </button>
 </form>
 
 <div>
-  @if (loading$ | async) {
-    <h2>Загрузка</h2>
+  @if (loading) {
+    <h2>Loading</h2>
   }
   @else {
     @if (response; as response) {
@@ -36,27 +36,29 @@
         }
       }
       @else {
-        <h2>Ничего не найдено</h2>
+        <h2>Nothing found</h2>
       }
     }
   }
 </div>
 
 
-<div class="footer">
-  <div class="divider"></div>
+@if (!loading && allPageNumbers.length > 0) {
+  <div class="footer">
+    <div class="divider"></div>
 
-  <span>Pages:</span>
-  <div>
-    @for (item of allPageNumbers; track $index) {
-      <button [class.active]="currentPageNumber === item" (click)="setPageNumber(item)">{{item}}</button>
-    }
-  </div>
+    <span>Pages:</span>
+    <div>
+      @for (item of allPageNumbers; track $index) {
+        <button [class.active]="currentPageNumber === item" (click)="setPageNumber(item)">{{item}}</button>
+      }
+    </div>
 
-  <span>Items per page:</span>
-  <div>
-    @for (item of allItemsPerPage; track $index) {
-      <button [class.active]="currentItemsPerPage === item" (click)="setItemsPerPage(item)">{{item}}</button>
-    }
+    <span>Items per page:</span>
+    <div>
+      @for (item of allItemsPerPage; track $index) {
+        <button [class.active]="currentItemsPerPage === item" (click)="setItemsPerPage(item)">{{item}}</button>
+      }
+    </div>
   </div>
-</div>
+}

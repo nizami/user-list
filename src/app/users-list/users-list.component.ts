@@ -65,14 +65,14 @@ export class UsersListComponent implements OnInit, OnDestroy {
       return Array.from({ length }, (x, i) => i + 1);
     }
 
-    return [1];
+    return [];
   }
 
   protected get currentPageNumber() {
     return this.searchForm.getRawValue().pageNumber;
   }
 
-  protected loading$ = new Subject<boolean>();
+  protected loading = false;
   protected response?: UserListResponseDto;
 
   private destroy$ = new Subject<void>();
@@ -92,7 +92,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
   public ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-    this.loading$.complete();
   }
 
   protected setViewState(value: ViewState): void {
@@ -109,13 +108,13 @@ export class UsersListComponent implements OnInit, OnDestroy {
 
   private updateSearchedUsers() {
     const request = this.searchForm.getRawValue();
-    this.loading$.next(true);
+    this.loading = true;
 
     this.usersApi
       .getList(request)
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => this.loading$.next(false))
+        finalize(() => (this.loading = false))
       )
       .subscribe((response) => {
         console.log(response);
