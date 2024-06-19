@@ -30,7 +30,8 @@ export class UsersApiService {
   getList(request: ListRequest): Observable<UserListResponseDto> {
     const search = request.search?.toLowerCase();
     const filteredUsers = this.DB.filter(
-      (x) => !search || x.user_name.toLowerCase().includes(search)
+      (x) =>
+        !search || (x.is_active && x.user_name.toLowerCase().includes(search))
     );
 
     const startIndex = (request.pageNumber - 1) * request.itemsPerPage;
@@ -46,14 +47,17 @@ export class UsersApiService {
   }
 
   getById(id: string): Observable<UserDto | undefined> {
-    const user = this.DB.find((x) => x.id === id);
+    const user = this.DB.find((x) => x.id === id && x.is_active);
 
     return of(user).pipe(delay(DELAY_VALUE));
   }
 
   remove(id: string): Observable<void> {
-    const index = this.DB.findIndex((x) => x.id === id);
-    this.DB.splice(index, 1);
+    const user = this.DB.find((x) => x.id === id && x.is_active);
+
+    if (user) {
+      user.is_active = false;
+    }
 
     return of(undefined).pipe(delay(DELAY_VALUE));
   }

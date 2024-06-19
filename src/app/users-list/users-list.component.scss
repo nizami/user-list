@@ -1,14 +1,17 @@
-form {
+.header,
+.footer {
   display: flex;
 
   background-color: gainsboro;
   padding: 12px;
   border-radius: 4px;
+}
 
-  .divider {
-    flex-grow: 1;
-  }
+.divider {
+  flex-grow: 1;
+}
 
+form {
   input {
     border: solid 1px gray;
     width: 300px;

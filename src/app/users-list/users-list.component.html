@@ -16,3 +16,17 @@
     Карточки
   </button>
 </form>
+
+<h2>Загрузка</h2>
+<h2>Найдено</h2>
+<h2>Ничего не найдено</h2>
+
+<div>
+  @if (response$ | async; as response) {
+    @for (item of response.items; track item.id) {
+      <app-user-list-item [user]="item"></app-user-list-item>
+    }
+  }
+</div>
+
+<div class="footer"></div>
