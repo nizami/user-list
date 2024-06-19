@@ -1,4 +1,4 @@
 export enum ViewState {
-  List,
-  Cards,
+  List = 'List',
+  Cards = 'Cards',
 }

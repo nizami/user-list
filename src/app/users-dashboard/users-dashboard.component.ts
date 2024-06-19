@@ -40,7 +40,7 @@ const ITEMS_PER_PAGE: ListRequest['itemsPerPage'][] = [5, 10, 20];
 })
 export class UsersDashboardComponent implements OnInit, OnDestroy {
   protected ViewState = ViewState;
-  protected currentViewState = ViewState.Cards;
+  protected currentViewState = ViewState.List;
 
   protected searchForm = new FormGroup<SearchUsersFormModel>({
     search: new FormControl(),
@@ -103,6 +103,7 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
 
   protected setViewState(value: ViewState): void {
     this.currentViewState = value;
+    this.navigateByQueryParams();
   }
 
   protected setItemsPerPage(value: ListRequest['itemsPerPage']): void {
@@ -140,11 +141,15 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
     };
 
     this.searchForm.patchValue(params);
+    this.currentViewState = this.route.snapshot.queryParams['viewState'];
   }
 
   private navigateByQueryParams(): void {
     this.router.navigate([], {
-      queryParams: this.searchForm.getRawValue(),
+      queryParams: {
+        ...this.searchForm.getRawValue(),
+        viewState: this.currentViewState,
+      },
     });
   }
 
