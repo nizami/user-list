@@ -1,4 +1,4 @@
-.header {
+form {
   display: flex;
 
   background-color: gainsboro;
@@ -19,6 +19,7 @@
   button {
     border: solid 1px gray;
     cursor: pointer;
+    transition: all 0.2s;
 
     &:first-of-type {
       border-radius: 4px 0 0 4px;

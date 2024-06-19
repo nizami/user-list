@@ -1,7 +1,18 @@
-<div class="header">
-  <input type="text" />
+<form class="header" [formGroup]="searchForm">
+  <input type="text" formControlName="search" />
 
   <div class="divider"></div>
-  <button class="active">Список</button>
-  <button>Карточки</button>
-</div>
+
+  <button
+    [class.active]="viewState === ViewState.List"
+    (click)="setViewState(ViewState.List)"
+  >
+    Список
+  </button>
+  <button
+    [class.active]="viewState === ViewState.Cards"
+    (click)="setViewState(ViewState.Cards)"
+  >
+    Карточки
+  </button>
+</form>
