@@ -19,7 +19,7 @@ import {
 import { CommonModule } from '@angular/common';
 
 const DEFAULT_PAGE_NUMBER = 1;
-const DEFAULT_ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = [5, 10, 20] as const;
 
 @Component({
   selector: 'app-users-list',
@@ -35,7 +35,7 @@ const DEFAULT_ITEMS_PER_PAGE = 5;
 })
 export class UsersListComponent implements OnInit, OnDestroy {
   protected ViewState = ViewState;
-  protected viewState = ViewState.List;
+  protected currentViewState = ViewState.List;
 
   protected searchForm = new FormGroup<SearchUsersFormModel>({
     search: new FormControl(),
@@ -43,12 +43,34 @@ export class UsersListComponent implements OnInit, OnDestroy {
       nonNullable: true,
     }),
     itemsPerPage: new FormControl<ListRequest['itemsPerPage']>(
-      DEFAULT_ITEMS_PER_PAGE,
+      ITEMS_PER_PAGE[0],
       {
         nonNullable: true,
       }
     ),
   });
+
+  protected allItemsPerPage = ITEMS_PER_PAGE;
+
+  protected get currentItemsPerPage() {
+    return this.searchForm.getRawValue().itemsPerPage;
+  }
+
+  protected get allPageNumbers(): number[] {
+    if (this.response) {
+      const length = Math.ceil(
+        this.response.total_count / this.currentItemsPerPage
+      );
+
+      return Array.from({ length }, (x, i) => i + 1);
+    }
+
+    return [1];
+  }
+
+  protected get currentPageNumber() {
+    return this.searchForm.getRawValue().pageNumber;
+  }
 
   protected loading$ = new Subject<boolean>();
   protected response?: UserListResponseDto;
@@ -60,11 +82,9 @@ export class UsersListComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.updateSearchedUsers();
 
-    this.searchForm.controls.search.valueChanges
+    this.searchForm.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$))
-      .subscribe((search) => {
-        console.log(search);
-
+      .subscribe(() => {
         this.updateSearchedUsers();
       });
   }
@@ -75,8 +95,16 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.loading$.complete();
   }
 
-  protected setViewState(viewState: ViewState): void {
-    this.viewState = viewState;
+  protected setViewState(value: ViewState): void {
+    this.currentViewState = value;
+  }
+
+  protected setItemsPerPage(value: ListRequest['itemsPerPage']): void {
+    this.searchForm.controls.itemsPerPage.setValue(value);
+  }
+
+  protected setPageNumber(value: number): void {
+    this.searchForm.controls.pageNumber.setValue(value);
   }
 
   private updateSearchedUsers() {

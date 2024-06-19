@@ -4,13 +4,13 @@
   <div class="divider"></div>
 
   <button
-    [class.active]="viewState === ViewState.List"
+    [class.active]="currentViewState === ViewState.List"
     (click)="setViewState(ViewState.List)"
   >
     Список
   </button>
   <button
-    [class.active]="viewState === ViewState.Cards"
+    [class.active]="currentViewState === ViewState.Cards"
     (click)="setViewState(ViewState.Cards)"
   >
     Карточки
@@ -25,7 +25,7 @@
     @if (response; as response) {
       @if (response.items.length > 0) {
         @for (item of response.items; track item.id) {
-          @switch (viewState) {
+          @switch (currentViewState) {
             @case (ViewState.List) {
               <app-user-list-item [user]="item"></app-user-list-item>
             }
@@ -42,4 +42,21 @@
   }
 </div>
 
-<div class="footer"></div>
+
+<div class="footer">
+  <div class="divider"></div>
+
+  <span>Pages:</span>
+  <div>
+    @for (item of allPageNumbers; track $index) {
+      <button [class.active]="currentPageNumber === item" (click)="setPageNumber(item)">{{item}}</button>
+    }
+  </div>
+
+  <span>Items per page:</span>
+  <div>
+    @for (item of allItemsPerPage; track $index) {
+      <button [class.active]="currentItemsPerPage === item" (click)="setItemsPerPage(item)">{{item}}</button>
+    }
+  </div>
+</div>
