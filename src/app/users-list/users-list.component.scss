@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+
+  background-color: gainsboro;
+  padding: 12px;
+  border-radius: 4px;
+
+  .divider {
+    flex-grow: 1;
+  }
+
+  input {
+    border: solid 1px gray;
+    width: 300px;
+    border-radius: 4px;
+    padding: 4px;
+  }
+
+  button {
+    border: solid 1px gray;
+    cursor: pointer;
+
+    &:first-of-type {
+      border-radius: 4px 0 0 4px;
+    }
+
+    &:last-of-type {
+      border-radius: 0 4px 4px 0;
+    }
+
+    &.active {
+      background-color: gray;
+      color: white;
+    }
+
+    &:hover {
+      background-color: rgb(160, 160, 160);
+    }
+
+    &:active {
+      background-color: rgb(118, 118, 118);
+    }
+  }
+}
