@@ -28,8 +28,6 @@ export class UsersApiService {
   ];
 
   getList(request: ListRequest): Observable<UserListResponseDto> {
-    console.log(request);
-    
     const search = request.search?.toLowerCase();
     const filteredUsers = this.DB.filter(
       (x) =>
@@ -37,8 +35,7 @@ export class UsersApiService {
     );
 
     const pagesCount = Math.ceil(filteredUsers.length / request.itemsPerPage);
-    const pageNumber =
-      request.pageNumber > pagesCount ? pagesCount : request.pageNumber;
+    const pageNumber = Math.min(pagesCount, Math.max(1, request.pageNumber));
 
     const startIndex = (pageNumber - 1) * request.itemsPerPage;
     const endIndex = startIndex + request.itemsPerPage;
