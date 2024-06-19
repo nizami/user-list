@@ -24,14 +24,12 @@
   @else {
     @if (response; as response) {
       @if (response.items.length > 0) {
-        @for (item of response.items; track item.id) {
-          @switch (currentViewState) {
-            @case (ViewState.List) {
-              <app-user-list-item [user]="item" (remove)="onRemove($event)"></app-user-list-item>
-            }
-            @case (ViewState.Cards) {
-              <app-user-card-item [user]="item"></app-user-card-item>
-            }
+        @switch (currentViewState) {
+          @case (ViewState.List) {
+            <app-users-list-view [users]="response.items" (remove)="onRemove($event)"></app-users-list-view>
+          }
+          @case (ViewState.Cards) {
+            <app-users-cards-view [users]="response.items" (remove)="onRemove($event)"></app-users-cards-view>
           }
         }
       }

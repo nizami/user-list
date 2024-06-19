@@ -1,7 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserCardItemComponent } from './user-card-item/user-card-item.component';
-import { UserListItemComponent } from './user-list-item/user-list-item.component';
-import { ViewState } from './model/view-state.model';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   ListRequest,
@@ -9,7 +6,6 @@ import {
   UserListResponseDto,
   UsersApiService,
 } from '../services/users.api.service';
-import { SearchUsersFormModel } from './model/search-users-form.model';
 import {
   Subject,
   debounceTime,
@@ -18,25 +14,29 @@ import {
   takeUntil,
 } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SearchUsersFormModel } from './model/search-users-form.model';
+import { ViewState } from './model/view-state.model';
+import { UsersListViewComponent } from './users-list-view/users-list-view.component';
+import { UsersCardsViewComponent } from './users-cards-view/users-cards-view.component';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const ITEMS_PER_PAGE = [5, 10, 20] as const;
 
 @Component({
-  selector: 'app-users-list',
+  selector: 'app-users-dashboard',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    UserListItemComponent,
-    UserCardItemComponent,
+    UsersListViewComponent,
+    UsersCardsViewComponent,
   ],
-  templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.scss',
+  templateUrl: './users-dashboard.component.html',
+  styleUrl: './users-dashboard.component.scss',
 })
-export class UsersListComponent implements OnInit, OnDestroy {
+export class UsersDashboardComponent implements OnInit, OnDestroy {
   protected ViewState = ViewState;
-  protected currentViewState = ViewState.List;
+  protected currentViewState = ViewState.Cards;
 
   protected searchForm = new FormGroup<SearchUsersFormModel>({
     search: new FormControl(),
@@ -108,8 +108,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
   }
 
   protected onRemove(user: UserDto): void {
-    console.log(user);
-    
     this.usersApi
       .remove(user.id)
       .pipe(takeUntil(this.destroy$))
@@ -129,8 +127,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
         finalize(() => (this.loading = false))
       )
       .subscribe((response) => {
-        console.log(response);
-
         this.response = response;
 
         this.searchForm.controls.pageNumber.setValue(response.page_number, {

@@ -28,6 +28,8 @@ export class UsersApiService {
   ];
 
   getList(request: ListRequest): Observable<UserListResponseDto> {
+    console.log(request);
+    
     const search = request.search?.toLowerCase();
     const filteredUsers = this.DB.filter(
       (x) =>

@@ -1,9 +1,7 @@
-:host {
+.list-item {
   display: flex;
   padding: 12px;
-  margin: 0;
   transition: all 0.2s;
-  cursor: pointer;
 
   &:nth-child(odd) {
     background-color: rgb(245, 245, 245);
@@ -12,8 +10,8 @@
   &:hover {
     background-color: rgb(200, 200, 200);
   }
-}
 
-.username {
-  font-size: 22px;
+  .username {
+    font-size: 22px;
+  }
 }

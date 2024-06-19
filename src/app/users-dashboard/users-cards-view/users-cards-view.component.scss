@@ -1,0 +1,38 @@
+$card-padding: 12px;
+$card-margin: 6px;
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.card-item {
+  display: flex;
+  flex-flow: column;
+  flex: 0 1 calc(100% / 10 - ($card-padding + $card-margin) * 2);
+  transition: all 0.2s;
+  height: 120px;
+  min-width: 120px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: $card-padding;
+  margin: $card-margin;
+
+  .username {
+    font-size: 22px;
+  }
+
+  button {
+    margin: auto;
+  }
+
+  &:hover {
+    background-color: rgb(200, 200, 200);
+  }
+
+  // если очень надо контролировать от кол-ва карточек
+  // @media (min-width: 1024px) {
+  //   flex: 0 1 calc(100% / 5 - ($card-padding + $card-margin) * 2);
+  // }
+}

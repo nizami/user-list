@@ -1,0 +1,15 @@
+@for (user of users; track user.id) {
+  <div class="card-item">
+    <div class="username">{{ user.user_name }}</div>
+
+    <div class="divider"></div>
+
+    @if (removingUser === user) {
+      <span>Removing</span>
+    } @else {
+      <button (click)="onRemove(user)">Remove</button>
+    }
+  </div>
+}
+
+
