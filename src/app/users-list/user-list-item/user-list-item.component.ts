@@ -9,10 +9,13 @@ import { UserDto } from '../../services/users.api.service';
   styleUrl: './user-list-item.component.scss',
 })
 export class UserListItemComponent {
-  @Input() user!: UserDto;
-  @Output() remove = new EventEmitter<UserDto>();
+  @Input() public user!: UserDto;
+  @Output() public remove = new EventEmitter<UserDto>();
+
+  protected isRemoving = false;
 
   protected onRemove(): void {
+    this.isRemoving = true;
     this.remove.emit(this.user);
   }
 }

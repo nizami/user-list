@@ -1,5 +1,9 @@
-<span>{{ user.user_name }}</span>
+<span class="username">{{ user.user_name }}</span>
 
 <div class="divider"></div>
 
-<button (click)="onRemove()">Remove</button>
+@if (isRemoving) {
+  <span>Removing</span>
+} @else {
+  <button (click)="onRemove()">Remove</button>
+}

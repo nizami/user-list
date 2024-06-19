@@ -31,7 +31,7 @@ export class UsersApiService {
     const search = request.search?.toLowerCase();
     const filteredUsers = this.DB.filter(
       (x) =>
-        !search || (x.is_active && x.user_name.toLowerCase().includes(search))
+        x.is_active && (!search || x.user_name.toLowerCase().includes(search))
     );
 
     const pagesCount = Math.ceil(filteredUsers.length / request.itemsPerPage);
@@ -52,13 +52,13 @@ export class UsersApiService {
   }
 
   getById(id: string): Observable<UserDto | undefined> {
-    const user = this.DB.find((x) => x.id === id && x.is_active);
+    const user = this.DB.find((x) => x.is_active && x.id === id);
 
     return of(user).pipe(delay(DELAY_VALUE));
   }
 
   remove(id: string): Observable<void> {
-    const user = this.DB.find((x) => x.id === id && x.is_active);
+    const user = this.DB.find((x) => x.is_active && x.id === id);
 
     if (user) {
       user.is_active = false;

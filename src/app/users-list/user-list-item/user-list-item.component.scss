@@ -2,7 +2,6 @@
   display: flex;
   padding: 12px;
   margin: 0;
-  font-size: 22px;
   transition: all 0.2s;
   cursor: pointer;
 
@@ -13,4 +12,8 @@
   &:hover {
     background-color: rgb(200, 200, 200);
   }
+}
+
+.username {
+  font-size: 22px;
 }
