@@ -3,20 +3,24 @@
 <form class="header" [formGroup]="searchForm">
   Search <input type="text" formControlName="search" />
 
+  @if (isResetStorageDataAvailable) {
+    <div class="divider"></div>
+
+    <button (click)="resetData()" class="reset-btn">
+      Reset storage data
+    </button>
+  }
+
   <div class="divider"></div>
 
-  <button
-    [class.active]="currentViewState === ViewState.List"
-    (click)="setViewState(ViewState.List)"
-  >
-    List
-  </button>
-  <button
-    [class.active]="currentViewState === ViewState.Cards"
-    (click)="setViewState(ViewState.Cards)"
-  >
-    Cards
-  </button>
+  <div class="group-btn">
+    <button [class.active]="currentViewState === ViewState.List" (click)="setViewState(ViewState.List)">
+      List
+    </button>
+    <button [class.active]="currentViewState === ViewState.Cards" (click)="setViewState(ViewState.Cards)">
+      Cards
+    </button>
+  </div>
 </form>
 
 <div [class.loading]="loading" class="main">

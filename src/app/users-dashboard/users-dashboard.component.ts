@@ -20,6 +20,7 @@ import { UsersListViewComponent } from './users-list-view/users-list-view.compon
 import { UsersCardsViewComponent } from './users-cards-view/users-cards-view.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { StorageService } from '../services/storage.service';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const ITEMS_PER_PAGE: ListRequest['itemsPerPage'][] = [5, 10, 20];
@@ -70,15 +71,18 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
 
   protected loading = false;
   protected response?: UserListResponseDto;
+  protected isResetStorageDataAvailable = false;
 
   private destroy$ = new Subject<void>();
 
   constructor(
-    private usersApi: UsersApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private storage: StorageService,
+    private usersApi: UsersApiService
   ) {
     this.initRouteQueryParams();
+    this.checkResetAvailability();
   }
 
   public ngOnInit(): void {
@@ -120,6 +124,11 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
       });
   }
 
+  protected resetData(): void {
+    this.storage.reset();
+    this.updateSearchedUsers();
+  }
+
   private initRouteQueryParams(): void {
     const params = {
       search: String(this.route.snapshot.queryParams['search']),
@@ -155,6 +164,12 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
         this.searchForm.controls.pageNumber.setValue(response.page_number, {
           emitEvent: false,
         });
+
+        this.checkResetAvailability();
       });
+  }
+
+  private checkResetAvailability(): void {
+    this.isResetStorageDataAvailable = this.storage.isResetAvailable();
   }
 }
