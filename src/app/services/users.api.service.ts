@@ -34,11 +34,16 @@ export class UsersApiService {
         !search || (x.is_active && x.user_name.toLowerCase().includes(search))
     );
 
-    const startIndex = (request.pageNumber - 1) * request.itemsPerPage;
+    const pagesCount = Math.ceil(filteredUsers.length / request.itemsPerPage);
+    const pageNumber =
+      request.pageNumber > pagesCount ? pagesCount : request.pageNumber;
+
+    const startIndex = (pageNumber - 1) * request.itemsPerPage;
     const endIndex = startIndex + request.itemsPerPage;
     const slicedUsers = filteredUsers.slice(startIndex, endIndex);
 
     const response: UserListResponseDto = {
+      page_number: pageNumber,
       total_count: filteredUsers.length,
       items: slicedUsers,
     };
@@ -76,6 +81,9 @@ export interface ListRequest {
 }
 
 export interface UserListResponseDto {
+  // я добавил это поле в модель, чтобы не было перерасчета на клиенте, когда номер страницы больше, чем есть в базе
+  // можно и без этого параметра, но придется пересчитать на клиенте
+  page_number: number;
   total_count: number;
   items: UserDto[];
 }

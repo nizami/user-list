@@ -120,6 +120,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
         console.log(response);
 
         this.response = response;
+
+        this.searchForm.controls.pageNumber.setValue(response.page_number, {
+          emitEvent: false,
+        });
       });
   }
 }
