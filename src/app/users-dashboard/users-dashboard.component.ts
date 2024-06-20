@@ -132,7 +132,7 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
 
   private initRouteQueryParams(): void {
     const params = {
-      search: String(this.route.snapshot.queryParams['search']),
+      search: String(this.route.snapshot.queryParams['search'] || ''),
       pageNumber: Number(this.route.snapshot.queryParams['pageNumber']) || 1,
       itemsPerPage:
         (Number(
@@ -141,7 +141,8 @@ export class UsersDashboardComponent implements OnInit, OnDestroy {
     };
 
     this.searchForm.patchValue(params);
-    this.currentViewState = this.route.snapshot.queryParams['viewState'];
+    this.currentViewState =
+      this.route.snapshot.queryParams['viewState'] || ViewState.List;
   }
 
   private navigateByQueryParams(): void {
